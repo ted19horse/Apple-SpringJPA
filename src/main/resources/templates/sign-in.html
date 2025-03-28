@@ -9,16 +9,14 @@
   <link href="/main.css" rel="stylesheet">
 </head>
 <body>
-
   <div th:replace="~{nav.html :: navbar}"></div>
 
-  <div class="card" th:each="작명 : ${notices}">
-    <img src="https://placehold.co/300">
-    <div>
-      <h4 th:text="${작명.글제목}"></h4>
-      <p>7억</p>
-    </div>
-  </div>
+  <form action="/join" method="POST">
+    <input type="text" name="username" placeholder="Username"><br>
+    <input type="password" name="password" placeholder="Password"><br>
+    <input type="text" name="displayName" placeholder="Display name"><br>
+    <button type="submit">버튼</button>
+  </form>
 
 </body>
 </html>

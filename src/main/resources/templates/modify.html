@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, user-scalable=no, initial-scale=1.0"
+        name="viewport">
+  <meta content="ie=edge" http-equiv="X-UA-Compatible">
+  <title>Document</title>
+  <link href="/main.css" rel="stylesheet">
+</head>
+<body>
+
+  <div th:replace="~{nav.html :: navbar}"></div>
+
+  <!--<div class="detail">-->
+  <!--  <h4>수정페이지</h4>-->
+  <!--  <img alt="" src="https://placehold.co/300">-->
+  <!--  <form action="/update" method="post">-->
+  <!--    <input name="id" th:value="${item.id}" type="hidden">-->
+  <!--    <input name="title" th:value="${item.title}" type="text"><br/>-->
+  <!--    <input name="price" th:value="${item.price}" type="text"><br/>-->
+  <!--    <button type="submit">수정</button>-->
+  <!--  </form>-->
+  <!--</div>-->
+
+  <form action="/update" method="POST">
+    <input name="id" th:value="${item.id}" type="hidden">
+    <input name="title" th:value="${item.title}" type="text"><br/>
+    <input name="price" th:value="${item.price}" type="text"><br/>
+    <button type="submit">수정</button>
+  </form>
+
+</body>
+</html>

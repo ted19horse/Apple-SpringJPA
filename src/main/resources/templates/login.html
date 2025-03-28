@@ -9,16 +9,19 @@
   <link href="/main.css" rel="stylesheet">
 </head>
 <body>
-
   <div th:replace="~{nav.html :: navbar}"></div>
 
-  <div class="card" th:each="작명 : ${notices}">
-    <img src="https://placehold.co/300">
-    <div>
-      <h4 th:text="${작명.글제목}"></h4>
-      <p>7억</p>
-    </div>
+  <h4>로그인 페이지</h4>
+
+  <div th:if="${param.error}">
+    <h4>아이디나 비번 틀림</h4>
   </div>
+
+  <form action="/login" method="POST">
+    <input name="username" placeholder="username">
+    <input name="password" type="password" placeholder="password">
+    <button type="submit">전송</button>
+  </form>
 
 </body>
 </html>

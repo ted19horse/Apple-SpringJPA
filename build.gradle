@@ -18,17 +18,71 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    querydsl {
+        extendsFrom compileClasspath
+    }
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.projectlombok:lombok'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+    implementation 'org.springframework.session:spring-session-jdbc'
+    testImplementation 'org.springframework.security:spring-security-test'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     runtimeOnly 'com.mysql:mysql-connector-j'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // QueryDSL 의존성
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor 'com.querydsl:querydsl-apt:5.0.0:jakarta'
+    annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
+    annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+// QueryDSL Q클래스 생성 설정
+def querydslDir = "$buildDir/generated/querydsl"
+
+sourceSets {
+    main.java.srcDir querydslDir
+}
+
+// Q클래스 컴파일 태스크 정의 (중복 생성 방지 로직 추가)
+task compileQuerydsl(type: JavaCompile) {
+    source = sourceSets.main.java
+    classpath = configurations.compileClasspath
+    destinationDirectory = sourceSets.main.java.classesDirectory
+    options.annotationProcessorPath = configurations.annotationProcessor
+    options.compilerArgs = [
+            "-proc:only",
+            "-processor", "com.querydsl.apt.jpa.JPAAnnotationProcessor"
+    ]
+    // 소스 파일만 처리하도록 하여 중복 생성 방지
+    source = sourceSets.main.java.filter { it.path.endsWith('.java') && !it.path.contains('/generated/') }
+}
+
+// clean 작업 시 생성된 Q클래스 폴더 전체 삭제
+clean {
+    delete file(querydslDir)
+}
+
+// Q클래스 폴더 생성 확인
+tasks.withType(JavaCompile) {
+    doFirst {
+        file(querydslDir).mkdirs()
+    }
+}
+
+// compileJava 태스크 전에 compileQuerydsl 태스크 실행
+compileJava.dependsOn compileQuerydsl

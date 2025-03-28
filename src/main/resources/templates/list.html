@@ -2,21 +2,35 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta content="width=device-width, user-scalable=no, initial-scale=1.0"
+        name="viewport">
+  <meta content="ie=edge" http-equiv="X-UA-Compatible">
   <title>Document</title>
-  <link rel="stylesheet" href="/main.css">
+  <link href="/main.css" rel="stylesheet">
 </head>
 <body>
 
-<div class="card" th:each="작명 : ${items}">
-  <img src="https://placehold.co/300">
-  <div>
-    <h4 th:text="${작명.title}">바지</h4>
-    <p>7억</p>
+  <div th:replace="~{nav.html :: navbar}"></div>
+
+  <div class="card" th:each="작명 : ${items}">
+      <img alt="" src="https://placehold.co/300">
+      <div>
+        <h4 th:text="${작명.title}"></h4>
+        <p th:text="${작명.price}">7억</p>
+        <a style="display:flex;" th:href="@{/detail/{id}(id=${작명.id})}">✏️</a>
+        <button class="btn" th:onclick="deleteItem([[${작명.id}]])">🗑️</button>
+      </div>
   </div>
-</div>
+
+  <script>
+    function deleteItem(id) {
+      fetch(`/test1?id=${id}`, { method: 'DELETE' })
+          .then(res => res.text())
+          .then(() => {
+            location.reload();
+          });
+    }
+  </script>
 
 </body>
 </html>

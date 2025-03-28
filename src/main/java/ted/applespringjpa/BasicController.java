@@ -7,15 +7,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class BasicController {
 
-  @GetMapping("/")
-  @ResponseBody
-  String hello(){
-    return "안녕하쇼";
-  }
+    @GetMapping("/")
+    @ResponseBody
+    String hello() {
+        return "안녕하쇼";
+    }
 
-  @GetMapping("/about")
-  @ResponseBody
-  String about(){
-    return "피싱사이트에요";
-  }
+    @GetMapping("/about")
+    @ResponseBody
+    String about() {
+        return "피싱사이트에요";
+    }
 }
