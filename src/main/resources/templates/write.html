@@ -18,8 +18,33 @@
 <!--  서버 설정 후 위와 같이 _csrf 추가해서 서버로 전달하는데, 토큰이 없으면 403 에러가 남.  -->
     <input name="title" placeholder="title">
     <input name="price" placeholder="price">
-    <button type="submit">버튼</button>
+    <input type="hidden" name="img_url">
+    <button type="submit">Save</button>
   </form>
+
+  <input type="file" onchange="getURL(this);">
+
+  <img src="" alt="">
+
+  <script>
+    async function getURL(e){
+      let file = e.files[0]
+      let name = encodeURIComponent(file.name)
+      let result = await fetch('/presigned-url?filename=' + name)
+      result = await result.text()
+
+      let 결과 = await fetch(result, {
+        method: 'PUT',
+        body: e.files[0]
+      })
+
+      console.log(결과.url.split("?")[0])
+      if (결과.ok) {
+        document.querySelector('img').src = 결과.url.split("?")[0]
+        document.querySelector('input[name="img_url"]').value = 결과.url.split("?")[0]
+      }
+    }
+  </script>
 
 </body>
 </html>

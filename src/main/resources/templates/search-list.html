@@ -31,7 +31,7 @@
 
   <div class="pages" th:if="${totalPages}">
     <span th:each="page : ${#numbers.sequence(1, totalPages)}">
-      <a th:href="@{/list/page/{page}(page=${page})}" th:text="${page}">page</a>
+      <a th:href="@{/search-list(searchText=${searchText}, page=${page})}" th:text="${page}">page</a>
     </span>
   </div>
 

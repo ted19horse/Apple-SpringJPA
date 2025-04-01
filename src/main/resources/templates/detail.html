@@ -17,7 +17,32 @@
     <img alt="" src="https://placehold.co/300">
     <h4 th:text="${item.title}"></h4>
     <p th:text="${item.price}"></p>
-    <button><a th:href="@{/modify/{id}(id=${item.id})}">modify</a></button>
+    <img th:if="${item.imgUrl}" th:src="${item.imgUrl}" alt="">
+    <button>
+      <a th:href="@{/modify/{id}(id=${item.id})}">Modify</a>
+    </button>
+  </div>
+
+  <form th:action="@{/order/{idx}(idx=${item.id})}" method="post">
+    <input type="number" name="count">
+    <button type="submit">Sales</button>
+  </form>
+
+  <form action="/comment/add" method="POST">
+    <input type="text" name="content" placeholder="댓글을 입력하세요.">
+    <input type="hidden" name="parentId" th:value="${item.id}">
+    <button type="submit">댓글 등록</button>
+  </form>
+
+  <div th:if="${comments}">
+    <table>
+      <tr th:each="comment : ${comments}">
+        <td th:text="${comment.id}"></td>
+        <td th:text="${comment.username}"></td>
+        <td th:text="${comment.content}"></td>
+        <td th:text="${comment.parentId}"></td>
+      </tr>
+    </table>
   </div>
 
 </body>

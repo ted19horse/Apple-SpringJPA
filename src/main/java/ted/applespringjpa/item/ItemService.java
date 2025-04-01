@@ -5,7 +5,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
+import ted.applespringjpa.comment.Comment;
+import ted.applespringjpa.comment.CommentRepository;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -15,12 +18,14 @@ import java.util.Optional;
 public class ItemService {
 
     private final ItemRepository itemRepository;
+    private final CommentRepository commentRepository;
 
     public void saveItem(Map<String, Object> formData, String username) {
         Item newItem = new Item();
         newItem.setUsername(username);
         newItem.setTitle((String) formData.get("title"));
         newItem.setPrice(Integer.parseInt((String) formData.get("price")));
+        newItem.setImgUrl((String) formData.get("img_url"));
         itemRepository.save(newItem);
     }
 
@@ -28,7 +33,10 @@ public class ItemService {
         ModelAndView modelAndView = new ModelAndView();
         Optional<Item> result = itemRepository.findById(Long.parseLong(id));
         if (result.isPresent()) {
+            System.out.println(result.get());
+            List<Comment> comments = commentRepository.findByParentId(Long.parseLong(id));
             modelAndView.addObject("item", result.get());
+            modelAndView.addObject("comments", comments);
             modelAndView.setViewName("detail.html");
         } else {
             modelAndView.setViewName("redirect:/list");

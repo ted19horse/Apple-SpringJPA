@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, user-scalable=no, initial-scale=1.0"
+        name="viewport">
+  <meta content="ie=edge" http-equiv="X-UA-Compatible">
+  <title>Document</title>
+  <link href="/main.css" rel="stylesheet">
+</head>
+<body>
+
+  <div th:replace="~{nav.html :: navbar}"></div>
+
+  <h1>쇼핑몰 주문 내역</h1>
+
+  <table>
+    <thead>
+    <tr>
+      <th>주문번호</th>
+      <th>상품명</th>
+      <th>가격</th>
+      <th>수량</th>
+      <th>총액</th>
+      <th>주문자</th>
+      <th>주문일시</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="sales : ${salesList}">
+      <div th:text="${sales}"></div>
+<!--      <td th:if="${sales.id}" th:text="${sales.id}">1</td>-->
+<!--      <td th:if="${sales.itemName}" th:text="${sales.itemName}">상품명</td>-->
+<!--      <td th:if="${sales.price}" th:text="${sales.price}">1000</td>-->
+<!--      <td th:if="${sales.count}" th:text="${sales.count}">1</td>-->
+<!--      <td th:if="${sales.price && sales.count}" th:text="${sales.price * sales.count}">1000</td>-->
+<!--      <td th:if="${sales.member}" th:text="${sales.member != null ? sales.member.displayName : '불명'}">주문자</td>-->
+<!--      <td th:if="${sales.displayName}" th:text="${sales.displayName}">주문자</td>-->
+<!--      <td th:if="${sales.created}" th:text="${#temporals.format(sales.created, 'yyyy-MM-dd HH:mm')}">2023-01-01</td>-->
+    </tr>
+    </tbody>
+  </table>
+
+<!--  <div class="pages" th:if="${totalPages}">-->
+<!--    <span th:each="page : ${#numbers.sequence(1, totalPages)}">-->
+<!--      <a th:href="@{/list/page/{page}(page=${page})}" th:text="${page}">page</a>-->
+<!--    </span>-->
+<!--  </div>-->
+
+</body>
+</html>
